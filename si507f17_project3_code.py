@@ -104,3 +104,24 @@ sample_class = NationalSite(sample_alcatraz)
 print(sample_class)
 print(sample_class.url)
 print(sample_class.get_mailing_address())
+
+######### PART 3 #########
+
+ak_list = get_park(arkansas_soup)
+ca_list = get_park(california_soup)
+mi_list = get_park(michigan_soup)
+
+arkansas_natl_sites = []
+for item in ak_list:
+  x = NationalSite(item)
+  arkansas_natl_sites.append(x)
+
+california_natl_sites = []
+for item in ca_list:
+  x = NationalSite(item)
+  california_natl_sites.append(x)
+
+michigan_natl_sites = []
+for item in mi_list:
+  x = NationalSite(item)
+  michigan_natl_sites.append(x)
