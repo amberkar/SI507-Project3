@@ -62,3 +62,45 @@ arkansas_soup = BeautifulSoup(arkansas_data, 'html.parser')
 
 california_data = open("california_data.html", "r").read()
 california_soup = BeautifulSoup(california_data, 'html.parser')
+
+######### PART 2 #########
+
+def get_park(s_soup):
+  s_list = s_soup.find("ul", {"id":"list_parks"}).find_all("li", {"class":"clearfix"})
+  return s_list
+
+class NationalSite(object):
+  def __init__(self, p_soup):
+      self.location = p_soup.find("h4").get_text()
+      self.name = p_soup.find("h3").get_text()
+      links = p_soup.find_all('a')[2]
+      self.url = links['href']
+      self.type = p_soup.find("h2").get_text() or "None"
+      self.description = p_soup.find("p").get_text().strip() or ""
+
+  def __str__(self):
+    return "{} | {}".format(self.name, self.location)
+
+  def __contains__(self, astring):
+    return astring in self.name
+
+  def get_mailing_address(self):
+    try:
+      park_html_data = requests.get(self.url)
+      basic_info_soup = BeautifulSoup(park_html_data.content, 'html.parser')
+      full_address_block = basic_info_soup.find('div', {"itemprop": "address"})
+      street = full_address_block.find('span', {"itemprop": "streetAddress"}).text.strip()
+      city = full_address_block.find('span', {"itemprop": "addressLocality"}).text.strip()
+      state = full_address_block.find('span', {"itemprop": "addressRegion"}).text.strip()
+      zip_ = full_address_block.find('span', {"itemprop": "postalCode"}).text.strip()
+      mailing_address = street + " / " + city + " / " + state + " / " + zip_
+      return mailing_address
+    except:
+      return ""
+
+sample_alcatraz = get_park(california_soup)[0]
+sample_class = NationalSite(sample_alcatraz)
+
+print(sample_class)
+print(sample_class.url)
+print(sample_class.get_mailing_address())
