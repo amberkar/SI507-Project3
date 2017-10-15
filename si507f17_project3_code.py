@@ -125,3 +125,24 @@ michigan_natl_sites = []
 for item in mi_list:
   x = NationalSite(item)
   michigan_natl_sites.append(x)
+
+  ######### PART 4 #########
+
+  def write_csv(filename, site_list):
+      with open(filename, 'w') as outfile:
+          writer = csv.writer(outfile, delimiter=',')
+          header = ["Name", "Location", "Type", "Address", "Description"]
+          writer.writerow(header)
+
+          for site in site_list:
+              if site.type is None:
+                  x = "None"
+              else:
+                  x = site.type
+              row = [site.name, site.location, x, site.get_mailing_address(), site.description]
+              writer.writerow(row)
+
+
+  write_csv("arkansas.csv", arkansas_natl_sites)
+  write_csv("california.csv", california_natl_sites)
+  write_csv("michigan.csv", michigan_natl_sites)
