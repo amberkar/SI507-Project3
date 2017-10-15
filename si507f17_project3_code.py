@@ -86,9 +86,9 @@ class NationalSite(object):
 
   def get_mailing_address(self):
     try:
-      park_html_data = requests.get(self.url)
-      basic_info_soup = BeautifulSoup(park_html_data.content, 'html.parser')
-      full_address_block = basic_info_soup.find('div', {"itemprop": "address"})
+      park_html = requests.get(self.url)
+      info_soup = BeautifulSoup(park_html.content, 'html.parser')
+      full_address_block = info_soup.find('div', {"itemprop": "address"})
       street = full_address_block.find('span', {"itemprop": "streetAddress"}).text.strip()
       city = full_address_block.find('span', {"itemprop": "addressLocality"}).text.strip()
       state = full_address_block.find('span', {"itemprop": "addressRegion"}).text.strip()
